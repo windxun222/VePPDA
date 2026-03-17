@@ -1,57 +1,72 @@
-# Sample Hardhat 3 Beta Project (`mocha` and `ethers`)
 
-This project showcases a Hardhat 3 Beta project using `mocha` for tests and the `ethers` library for Ethereum interactions.
+# VePPDA: Verifiable and Privacy-Preserving Dynamic Ascending Auctions on the Blockchain
 
-To learn more about the Hardhat 3 Beta, please visit the [Getting Started guide](https://hardhat.org/docs/getting-started#getting-started-with-hardhat-3). To share your feedback, join our [Hardhat 3 Beta](https://hardhat.org/hardhat3-beta-telegram-group) Telegram group or [open an issue](https://github.com/NomicFoundation/hardhat/issues/new) in our GitHub issue tracker.
+> **Status**: Research Proof of Concept (PoC)  
+> **Paper**: VePPDA: Verifiable and Privacy-Preserving Dynamic Ascending Auctions on the Blockchain
 
-## Project Overview
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Solidity](https://img.shields.io/badge/Solidity-^0.8.24-blue)](https://soliditylang.org)
+[![Hardhat](https://img.shields.io/badge/Hardhat-3.0.0--beta.5-blue)](https://hardhat.org)
 
-This example project includes:
+This repository contains the **Proof of Concept (PoC)** implementation for the academic paper **"VePPDA: Verifiable and Privacy-Preserving Dynamic Ascending Auctions on the Blockchain"**. It demonstrates a decentralized auction protocol achieving bid privacy and public verifiability via **Paillier homomorphic encryption** and **challenge-response mechanisms**.
 
-- A simple Hardhat configuration file.
-- Foundry-compatible Solidity unit tests.
-- TypeScript integration tests using `mocha` and ethers.js
-- Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet.
+---
 
-## Usage
+## 🎯 Overview
 
-### Running Tests
+VePPDA addresses privacy leakage and strategic manipulation in on-chain auctions. Unlike traditional sealed-bid auctions, VePPDA allows:
+1.  **Privacy-Preserving Bidding**: Bids are encrypted using Paillier cryptosystem.
+2.  **Public Verifiability**: Invalid bids can be challenged and proven via cryptographic proofs.
+3.  **Dynamic Ascending Logic**: Supports iterative bidding rounds with privacy guarantees.
 
-To run all the tests in the project, execute the following command:
+---
 
-```shell
+## 🏗️ System Architecture
+
+The protocol is implemented in Solidity using a modular design:
+
+```
+contracts/
+├── VePPDA_Main.sol          # Entry point & state management
+├── VePPDA_Auction.sol       # Encrypted bidding logic
+├── VePPDA_Settlement.sol    # Winner determination & price revelation
+├── VePPDA_Dispute.sol       # Dispute resolution & arbitration
+├── Verifier.sol             # Cryptographic proof verification
+├── GlobalsStruct.sol        # Shared data structures
+└── BigNumbers.sol           # Large integer arithmetic for Paillier
+```
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js ≥ 18.x
+- npm/yarn
+
+### Installation & Deployment
+
+```bash
+# Clone & Install
+git clone https://github.com/windxun222/VePPDA.git
+cd VePPDA
+npm install
+
+# Compile
+npx hardhat compile
+
+# Test
 npx hardhat test
+
 ```
 
-You can also selectively run the Solidity or `mocha` tests:
+*Note: As a research PoC, gas optimization and mainnet security audits are out of scope.*
 
-```shell
-npx hardhat test solidity
-npx hardhat test mocha
-```
+---
 
-### Make a deployment to Sepolia
+## 🔐 Security & Limitations
 
-This project includes an example Ignition module to deploy the contract. You can deploy this module to a locally simulated chain or to Sepolia.
+- **Cryptographic Assumptions**: Relies on the Decisional Composite Residuosity Assumption (DCRA) for Paillier security.
+- **PoC Status**: This implementation is for research demonstration. **Do not use with real value** without a professional security audit.
 
-To run the deployment to a local chain:
-
-```shell
-npx hardhat ignition deploy ignition/modules/Counter.ts
-```
-
-To run the deployment to Sepolia, you need an account with funds to send the transaction. The provided Hardhat configuration includes a Configuration Variable called `SEPOLIA_PRIVATE_KEY`, which you can use to set the private key of the account you want to use.
-
-You can set the `SEPOLIA_PRIVATE_KEY` variable using the `hardhat-keystore` plugin or by setting it as an environment variable.
-
-To set the `SEPOLIA_PRIVATE_KEY` config variable using `hardhat-keystore`:
-
-```shell
-npx hardhat keystore set SEPOLIA_PRIVATE_KEY
-```
-
-After setting the variable, you can run the deployment with the Sepolia network:
-
-```shell
-npx hardhat ignition deploy --network sepolia ignition/modules/Counter.ts
-```
+---
